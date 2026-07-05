@@ -1,0 +1,201 @@
+================================================================
+PROJECT: Healthcare Patient Readmission Analysis (Capstone)
+DATASET: Diabetic Patient Dataset — 130 US Hospitals (1999-2008)
+         UCI Machine Learning Repository via Kaggle
+TOOLS: Python (Pandas, Seaborn, Matplotlib) | SQL Server | Power BI
+RECORDS: 100,241 patient encounters | 52 features (after engineering)
+================================================================
+
+TOP 5 BUSINESS INSIGHTS & RECOMMENDATIONS
+================================================================
+
+INSIGHT 1 — Nearly Half of All Patients Are Readmitted
+----------------------------------------------------------------
+Finding:
+Overall readmission rate is 46.31% — meaning nearly 1 in 2 diabetic
+patients returns to hospital after discharge.
+Breakdown:
+  - NO readmission:    53.69% (53,818 patients)
+  - Readmitted >30d:   35.09% (35,173 patients)
+  - Readmitted <30d:   11.22% (11,250 patients)
+
+The <30-day readmission group is particularly concerning — it
+signals that patients were discharged before being fully stable.
+
+Root Cause:
+Premature discharge, inadequate post-discharge care planning,
+and uncontrolled blood glucose management are the primary drivers.
+
+Recommendation:
+- Implement a structured 30-day post-discharge follow-up program
+  for ALL diabetic patients before discharge
+- Flag high-risk patients (using the risk scoring model in this
+  analysis) for extended inpatient monitoring before discharge
+- Establish automated 7-day and 14-day check-in calls for
+  recently discharged patients
+
+Expected Impact:
+Reducing <30-day readmissions by even 15% could prevent ~1,687
+unnecessary readmissions annually, significantly reducing costs.
+
+================================================================
+
+INSIGHT 2 — Emergency Admissions Are the Highest-Risk Entry Point
+----------------------------------------------------------------
+Finding:
+Emergency admissions have a readmission rate of 47.49%, the
+highest among all structured admission types — nearly 7 points
+higher than Elective admissions (40.99%).
+
+Emergency accounts for the largest patient volume (27,958 patients
+= 27.9% of all encounters), making this the single highest-impact
+segment to target.
+
+Root Cause:
+Emergency patients arrive in acute/unstable condition, often with
+unmanaged glucose levels. The urgency of care leaves limited time
+for proper discharge planning and patient education.
+
+Recommendation:
+- Deploy a dedicated "Diabetic Emergency Care Team" for inpatient
+  stabilization of emergency admissions
+- Require a mandatory diabetes care education session before
+  discharge for all emergency diabetic patients
+- Partner with community health workers for post-emergency
+  home visits within 72 hours of discharge
+
+Expected Impact:
+Reducing emergency readmission rate from 47.49% to 42% could
+save approximately 1,400 readmissions from this segment alone.
+
+================================================================
+
+INSIGHT 3 — Elderly Patients (70-90) Face the Highest Readmission Risk
+----------------------------------------------------------------
+Finding:
+Age groups [70-80) and [80-90) show the highest readmission rates:
+  - [80-90): 48.26% readmission rate
+  - [70-80): 48.21% readmission rate
+  - [60-70): 46.38% readmission rate
+
+Together, these three age groups represent 65,748 patients (65.6%
+of total encounters) — the dominant patient population.
+
+Root Cause:
+Elderly diabetic patients often have multiple comorbidities,
+reduced mobility, and limited ability to self-manage post-discharge
+care. Social isolation and caregiver gaps amplify the risk.
+
+Recommendation:
+- Create age-specific discharge protocols for patients 70+
+- Involve family members/caregivers in discharge planning sessions
+- Prioritize elderly patients for community nursing visit programs
+- Simplify medication regimens where possible to improve adherence
+
+Expected Impact:
+Targeted elderly care programs can reduce their readmission rates
+by an estimated 5-8 percentage points.
+
+================================================================
+
+INSIGHT 4 — High Visit History = Strongest Readmission Predictor
+----------------------------------------------------------------
+Finding:
+Total prior visits (outpatient + emergency + inpatient combined)
+showed the STRONGEST correlation with readmission (r = 0.205)
+of all features analyzed — higher than medications, diagnoses,
+age, or hospital stay duration.
+
+Visit category readmission rates:
+  - High Utilization (5+ visits):   significantly elevated
+  - Moderate Utilization (3-4):      elevated
+  - Low Utilization (1-2):           moderate
+  - No Previous Visits:              lowest risk
+
+Root Cause:
+Patients with high prior healthcare utilization have more complex,
+chronic conditions that repeatedly destabilize — they are already
+"known" high-risk patients in the system.
+
+Recommendation:
+- Create a "High Utilizer" watchlist for patients with 5+ prior visits
+- Assign a dedicated care coordinator to high-utilizer patients
+- Proactively schedule these patients for regular diabetes management
+  clinic visits to avoid emergency escalation
+- Review medication regimens quarterly for high-utilizer patients
+
+Expected Impact:
+Proactive management of the top 10% highest utilizers (4,389
+patients) could prevent a disproportionate share of readmissions.
+
+================================================================
+
+INSIGHT 5 — Insulin Dosage Changes Signal Instability
+----------------------------------------------------------------
+Finding:
+Patients whose insulin was adjusted ("Down" or "Up") show higher
+readmission rates than stable patients:
+  - Insulin "Down":   52.88% readmission rate (HIGHEST)
+  - Insulin "Up":     51.68%
+  - Insulin "Steady": 45.42%
+  - No insulin:       43.92%
+
+Root Cause:
+Insulin dose changes indicate active glucose management challenges.
+"Down" adjustments may signal hypoglycemic episodes — a serious
+complication that increases readmission risk.
+
+Recommendation:
+- Flag all patients with insulin dose changes (Up or Down) as
+  high-priority for extended monitoring before discharge
+- Implement a glucose stabilization protocol: patients with insulin
+  adjustments should not be discharged until glucose readings are
+  stable for 24+ hours
+- Provide targeted insulin self-management education for patients
+  with recent dose changes
+
+Expected Impact:
+Stabilizing glucose before discharge could reduce insulin-change
+patients' readmission rate from ~52% toward the "Steady" baseline
+of 45%, preventing ~700 readmissions annually.
+
+================================================================
+
+FEATURE ENGINEERING HIGHLIGHTS
+----------------------------------------------------------------
+8 new features were engineered to enable richer analysis:
+
+| Feature             | Logic                                       |
+|---------------------|---------------------------------------------|
+| total_visits        | outpatient + emergency + inpatient visits   |
+| visit_category      | No/Low/Moderate/High utilization bins       |
+| stay_category       | Short (<4d) / Medium (4-7d) / Long (>7d)   |
+| medication_load     | Low (<10) / Medium (10-20) / High (>20)    |
+| diagnosis_complexity| Based on number_diagnoses                  |
+| age_midpoint        | Numeric midpoint of age bracket            |
+| readmission_binary  | 0/1 target variable for correlation analysis|
+| admission_type      | Human-readable via IDS_mapping JOIN         |
+
+================================================================
+
+OVERALL BUSINESS IMPACT SUMMARY
+----------------------------------------------------------------
+| Metric                              | Value           |
+|--------------------------------------|-----------------|
+| Total Patient Encounters Analyzed    | 100,241         |
+| Overall Readmission Rate             | 46.31%          |
+| <30-Day Readmissions                 | 11,250 (11.22%) |
+| >30-Day Readmissions                 | 35,173 (35.09%) |
+| Highest-Risk Age Group               | [80-90) — 48.26%|
+| Highest-Risk Admission Type          | Emergency 47.49%|
+| Strongest Readmission Predictor      | total_visits (r=0.205)|
+| Insulin Change Readmission Rate      | 52.88% (Down)   |
+
+Note: This dataset covers 130 US hospitals from 1999-2008 and
+represents diabetic patient encounters only. Findings reflect
+patterns within this specific population and time period.
+
+================================================================
+Prepared by: Supriya Dixit
+Date: July 2026
+================================================================
