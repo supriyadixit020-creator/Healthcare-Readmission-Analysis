@@ -150,8 +150,8 @@ age_midpoint       ████   r = 0.024
 ---
 
 ## 🖥️ Dashboard
-
-![Healthcare Readmission Dashboard](Screenshot_2026-07-05_220104.png)
+!![Healthcare Readmission Dashboard Page 1](Healthcare_Dashboard_Page1.png)
+![Healthcare Deep Dive Analysis Page 2](Healthcarer_Dashboard_page2.png)
 
 **Features:** 5 KPI cards · Readmission distribution donut · Age vs readmission stacked bar · Medication load comparison · Admission type breakdown · Hospital stay analysis · Top 10 medical specialties · 4 interactive slicers (Gender, Age, Medication Load, Admission Type)
 
